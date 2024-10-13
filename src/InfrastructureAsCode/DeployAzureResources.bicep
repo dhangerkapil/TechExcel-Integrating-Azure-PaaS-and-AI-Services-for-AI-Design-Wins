@@ -63,6 +63,9 @@ var locations = [
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   name: cosmosDbName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   kind: 'GlobalDocumentDB'
   properties: {
     consistencyPolicy: {
@@ -78,6 +81,9 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
 resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-04-15' = {
   parent: cosmosDbAccount
   name: cosmosDbDatabaseName
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   properties: {
     resource: {
       id: cosmosDbDatabaseName
@@ -89,6 +95,9 @@ resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@20
 resource sqlServer 'Microsoft.Sql/servers@2021-11-01' = {
   name: sqlServerName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   properties: {
     administratorLogin: sqlAdminUsername
     administratorLoginPassword: sqlAdminPassword
@@ -100,6 +109,9 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-11-01' = {
   parent: sqlServer
   name: sqlDatabaseName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   properties: {
     collation: 'SQL_Latin1_General_CP1_CI_AS'
   }
@@ -114,6 +126,9 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-11-01' = {
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   sku: {
     name: 'Standard_LRS'
   }
@@ -127,6 +142,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
 resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
   name: searchServiceName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   sku: {
     name: 'standard'
   }
@@ -136,6 +154,9 @@ resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
 resource openAI 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: openAIName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   kind: 'OpenAI'
   sku: {
     name: 'S0'
@@ -152,6 +173,9 @@ resource openAI 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [for deployment in deployments: {
   parent: openAI
   name: deployment.name
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   sku: {
     name: 'Standard'
     capacity: deployment.capacity
@@ -169,6 +193,9 @@ resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01
 resource speechService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: speechServiceName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   kind: 'SpeechServices'
   sku: {
     name: 'S0'
@@ -181,9 +208,12 @@ resource speechService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 }
 
 @description('Creates an Azure AI Services Language service.')
-resource languagteService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
+resource languageService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: languageServiceName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   kind: 'TextAnalytics'
   sku: {
     name: 'S'
@@ -199,6 +229,9 @@ resource languagteService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: logAnalyticsName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   properties: {
     sku: {
       name: 'PerGB2018'
@@ -214,6 +247,9 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09
 resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: appInsightsName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   kind: 'web'
   properties: {
     Application_Type: 'web'
@@ -225,6 +261,9 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-12-01' = {
   name: registryName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   sku: {
     name: registrySku
   }
@@ -237,6 +276,9 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-12-01' =
 resource appServicePlan 'Microsoft.Web/serverFarms@2022-09-01' = {
   name: appServicePlanName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   kind: 'linux'
   properties: {
     reserved: true
@@ -250,6 +292,9 @@ resource appServicePlan 'Microsoft.Web/serverFarms@2022-09-01' = {
 resource appServiceApp 'Microsoft.Web/sites@2022-09-01' = {
   name: webAppNameApi
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true
@@ -280,15 +325,18 @@ resource appServiceApp 'Microsoft.Web/sites@2022-09-01' = {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: appInsights.properties.InstrumentationKey
         }
-        ]
-      }
+      ]
     }
+  }
 }
 
 @description('Creates an Azure App Service for the Dashboard.')
 resource appServiceAppDash 'Microsoft.Web/sites@2022-09-01' = {
   name: webAppNameDash
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true
@@ -319,14 +367,17 @@ resource appServiceAppDash 'Microsoft.Web/sites@2022-09-01' = {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: appInsights.properties.InstrumentationKey
         }
-        ]
-      }
+      ]
     }
+  }
 }
 
 resource functionAppServicePlan 'Microsoft.Web/serverFarms@2022-09-01' = {
   name: functionAppServicePlanName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   sku: {
     name: 'Y1'
     tier: 'Dynamic'
@@ -337,6 +388,9 @@ resource functionAppServicePlan 'Microsoft.Web/serverFarms@2022-09-01' = {
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: functionAppName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   kind: 'functionapp'
   properties: {
     serverFarmId: functionAppServicePlan.id
@@ -377,6 +431,9 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 resource apiManagementService 'Microsoft.ApiManagement/service@2023-09-01-preview' = {
   name: apiManagementServiceName
   location: location
+  tags: {
+    SecurityControl: 'Ignore'
+  }
   sku: {
     name: apimSku
     capacity: apimSkuCount
