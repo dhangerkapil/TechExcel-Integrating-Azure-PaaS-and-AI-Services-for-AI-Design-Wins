@@ -55,23 +55,27 @@ app.MapGet("/", async () =>
     .WithName("Index")
     .WithOpenApi();
 
-app.MapGet("/Hotels", async () => 
+
+app.MapGet("/Hotels", async (IDatabaseService databaseService) => 
 {
-    throw new NotImplementedException();
+    var hotels = await databaseService.GetHotels();
+    return Results.Ok(hotels);
 })
     .WithName("GetHotels")
     .WithOpenApi();
 
-app.MapGet("/Hotels/{hotelId}/Bookings/", async (int hotelId) => 
+app.MapGet("/Hotels/{hotelId}/Bookings/", async (int hotelId, IDatabaseService databaseService) => 
 {
-    throw new NotImplementedException();
+    var bookings = await databaseService.GetBookingsForHotel(hotelId);
+    return Results.Ok(bookings);
 })
     .WithName("GetBookingsForHotel")
     .WithOpenApi();
 
-app.MapGet("/Hotels/{hotelId}/Bookings/{min_date}", async (int hotelId, DateTime min_date) => 
+app.MapGet("/Hotels/{hotelId}/Bookings/{min_date}", async (int hotelId, DateTime min_date, IDatabaseService databaseService) => 
 {
-    throw new NotImplementedException();
+    var bookings = await databaseService.GetBookingsByHotelAndMinimumDate(hotelId, min_date);
+    return Results.Ok(bookings);
 })
     .WithName("GetRecentBookingsForHotel")
     .WithOpenApi();
